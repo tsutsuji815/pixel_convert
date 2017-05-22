@@ -8,7 +8,7 @@ import datetime as dt
 from pixel import make_dot
 
 app = Flask(__name__)
-config = {'MAX_CONTENT_LENGTH': 1024 * 1024 * 2}
+config = {'MAX_CONTENT_LENGTH': 1024 * 1024 * 2, 'DEBUG': False}
 app.config.update(config)
 
 
