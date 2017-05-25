@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="イラストとかをドット絵っぽく変換するんだよ">
     <title>ドット絵こんばーた</title>
     <link href="static/css/bootstrap.min.css" rel="stylesheet">
     <link href="static/css/original.css" rel="stylesheet">
@@ -24,8 +25,9 @@
         <div class="collapse navbar-collapse" id="nav-right">
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="#" data-toggle="modal" data-target="#info">せつめい</a></li>
-                <li><a href="https://twitter.com/tsutsuji815">TWITTER</a></li>
-                <li><a href="https://monopro.org/">SITE</a></li>
+                <li><a href="https://twitter.com/tsutsuji815" target="_blank">Twitter</a></li>
+                <li><a href="https://github.com/tsutsuji815/pixel_convert" target="_blank">GitHub</a></li>
+                <li><a href="https://monopro.org/" target="_blank">SITE</a></li>
             </ul>
         </div>
     </div>
@@ -46,20 +48,30 @@
                     質問とか要望とか言いたいことがある人は<a href="https://twitter.com/tsutsuji815">Twitter(@tsutsuji815)</a>までどうぞ<br>
                 </p>
                 <h4>ざっくりとした仕様とか</h4>
-                <p>
-                    ・対応している画像は2MBまでのjpegとpngです<br>
-                    ・画像解像度は容量以内であれば制限はありませんが、長辺が1024pxを超えるものは1024pxに縮小されます<br>
-                    ・RGBAやグレースケールのものも扱えますが、出力時にRGBに変換されます<br>
-                    ・なので透過は無視されます<br>
-                    ・処理結果画像は一定期間保持された後削除されます。SNSなどに貼るときは一度ローカルへの保存をおすすめします<br>
-                </p>
+                <ul>
+                    <li>対応している画像は2MBまでのjpegとpngです</li>
+                    <li>画像解像度は容量以内であれば制限はありませんが、長辺が1024pxを超えるものは1024pxに縮小されます</li>
+                    <li><s>RGBAやグレースケールのものも扱えますが、出力時にRGBに変換されます<br>
+                        なので透過は無視されます</s></li>
+                    <li>透過PNGに対応しました(2017/05/23)<br>
+                    <li>「透過PNGで書き出す」にチェックを入れるとRGBAの画像は透過PNGとしてそのまま書き出されます</li>
+                    <li>ただしこの時アルファチャンネルはドットのサイズに拡大され、半透明は無視されます</li>
+                    <li>「Twitter用に1pxだけ透過」にチェックを入れると左上の1ピクセルだけ透明な透過PNGとして書き出します<br>
+                    jpegへの強制圧縮を回避したい時に使ってください</li>
+                    <li>処理結果画像は一定期間保持された後削除されます。SNSなどに貼るときは一度ローカルへの保存をおすすめします</li>
+                </ul>
                 <h4>だいたいの原理とか</h4>
-                <p>
-                    ・OpenCVを用いてまず画像をn分の1に縮小→元サイズに復元してモザイク化します<br>
-                    ・この時必要に応じて平滑化やerodeなどのフィルターを掛けます<br>
-                    ・次に全ピクセルの色をk色にkmeansで分類しそれぞれの平均値を求め、色を置き換え減色します<br>
-                    ・そして出来上がるのがドット絵っぽい処理画像です<br>
-                </p>
+                <ul>
+                    <li>OpenCVを用いてまず画像をn分の1に縮小→元サイズに復元してモザイク化します</li>
+                    <li>この時必要に応じて平滑化やerodeなどのフィルターを掛けます</li>
+                    <li>次に全ピクセルの色をk色にkmeansで分類しそれぞれの平均値を求め、色を置き換え減色します</li>
+                    <li>そして出来上がるのがドット絵っぽい処理画像です</li>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
         </div>
     </div>
@@ -69,7 +81,7 @@
         <div class="col-md-3">
             <form action="./" method="post" enctype="multipart/form-data">
                 <div class="form-group">
-                    <label>画像(最大2MBまで)<br>透過pngはRGBに変換されます</label>
+                    <label>画像(最大2MBまで)<br>透過PNGに対応しました(2017/05/23)</label>
                     <input type="file" name="image" accept='image/png,image/jpeg'>
                 </div>
                 <div class="form-group">
@@ -100,8 +112,21 @@
                     <label class="radio-inline"><input name="erode" type="radio" value="1">弱</label>
                     <label class="radio-inline"><input name="erode" type="radio" value="2">強</label>
                 </div>
+                <div class="form-group">
+                    <label><input name="alpha" type="checkbox" value="1" checked>透過PNGで書き出す</label>
+                    <label><input name="to_tw" type="checkbox" value="1" checked>Twitter用に1pxだけ透過</label>
+                </div>
                 <button type="submit" class="btn btn-primary">実行</button>
             </form>
+            <div class="add-margin-top">
+                <a href="https://twitter.com/share" class="twitter-share-button"
+                   data-url="https://app.monopro.org/pixel/" data-text="ドット絵こんばーた" data-size="large"
+                   data-hashtags="ドット絵こんばーた">Tweet</a>
+                <script>
+                    !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
+                </script>
+                <p>取り急ぎ付けたただのボタンなんで画像添付ツイートはちょっとまってね</p>
+            </div>
         </div>
         {% if result %}
         <div class="col-md-9 add-margin-top">
@@ -116,6 +141,13 @@
             <div class="tab-content">
                 <div id="result" class="tab-pane active">
                     <img class="img-responsive" src="{{ result }}">
+                    {% if colors %}
+                    <div class="add-margin-top">
+                        {% for color in colors %}
+                        <span class="label" style="background-color: {{ color }};">{{ color }}</span>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
                 </div>
                 <div id="original" class="tab-pane">
                     <img class="img-responsive" src="{{ org_img }}">
